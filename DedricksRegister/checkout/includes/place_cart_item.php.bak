@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Checkout</title>
+        <link href="../../css/style.css" rel="stylesheet" type="text/css">
+        <link href="../../css/register.css" rel="stylesheet" type="text/css">
+
+    </head>
+
+    <body>
+
+<?php
+
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
+
+    //We can get here two ways:
+    //UPC scanner scans and brings us here
+    //But if there were two items with the same UPC code, 
+
+    if(isset($_GET['upc'])){
+        $gotupc  = $_GET['upc'];
+
+        foreach ($_SESSION['inventory'] as $sessitem) {
+            $sessupc = $sessitem['UPC'];
+            if($sessupc  == $gotupc){
+                $results[] = $sessitem;
+            }
+        }
+
+    }else if(isset($_GET['itemcode'])){
+
+        $gotitemcode = $_GET['itemcode'];
+        foreach ($_SESSION['inventory'] as $sessitem) {
+            $sessitemcode = (int)$sessitem['ItemCode'];
+
+            if($sessitemcode == (int)$gotitemcode){
+                $results[] = $sessitem;
+            }
+        }
+    } 
+
+    //No results found, Item Not Found message, and return
+    if(!isset($results) || count($results)==0){
+
+        $return = urldecode($_SESSION['return']);
+        echo "
+                <div class=\"center-modal\" style=\"top:0px\" onkeydown=\"keySubmit(event, 'inf')\">
+                    <form class=\"choose-item animate-zoom\" id=\"inf\" style=\"width:10%; align-items:center\" action=\"$return\">
+                        <div class=\"container\" style=\"top:0; height:60%\">
+                            <h1>Item Not Found</h1>
+                        </div>
+                        <div class=\"container\" style=\"top:0; padding:0; height:30%\">
+                            <button type=\"submit\">Ok</button>
+                        </div>
+                    </form>
+                </div>";
+    //----------------------------------------------------------------------------------------------------------------------------
+    //More than one item with the same UPC: Form to choose which item, then form submit back here with $_GET['itemcode']
+    }else if(isset($results[1])){
+        echo "
+                <div class=\"center-modal\" onkeydown=\"keySubmit(event, 'chs')\">
+                    <form class=\"choose-item animate-zoom\" id=\"chs\" action=\"includes/place_cart_item.php\" method=\"get\">
+                        <div class=\"container\" style=\"top:0; height:60%\">
+                            <h1>Many Items with the Same UPC
+                            <br>Select Product</h1><br>
+                    ";
+        $radio_id = 1;
+        foreach ($results as $res) {
+            
+            $result_itemcode = $res['ItemCode'];
+            $result_descript = $res['Description'];
+            $result_price    = number_format($res['Price'], 2, '.', '');
+
+            echo "
+
+            <input name=\"itemcode\" value=\"$result_itemcode\" type=\"radio\" id=\"rd".$radio_id."\" required>
+                  <label class=\"radioitem\" for=\"rd".$radio_id."\"> $result_descript \$$result_price </label><br>";
+
+            $radio_id++;
+        }
+
+        echo "              <div class=\"container\" style=\"top:0; height:30%\">
+                                <button type=\"button\" onclick=\"window.location = '/DedricksRegister/checkout'\" class=\"cancelbtn\">Cancel</button>
+                                <button type=\"submit\" style=\"right:5px; width:auto\">Sumbit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>";
+    //----------------------------------------------------------------------------------------------------------------------------
+    //A Single Result
+    }else{
+        $result = $results[0];
+    }
+
+
+
+    //should have a single result by this point
+    if(isset($result)){
+
+
+        //determine item
+        $finitem = $result;
+
+        //determine meas
+        $finmeas = $_SESSION['measurements'][$finitem['MeasID']];
+
+
+
+        if ($finitem['EaYN'] === "0"){
+
+            if(strlen(($finitem['Description']) > 10)){
+                $abbrev = substr($finitem['Description'], 0, 10);
+            }
+            else{
+                $abbrev = $finitem['Description'];
+            }
+
+            $shprice = number_format($finitem['Price'], 2, '.', '');
+
+            $fweight = $finitem['Weight'];
+            if(  (double)$fweight == (double)((int)$fweight)   ){
+                $shweight = (int)$fweight;
+            }else{
+                $shweight = number_format($fweight, 2, '.', '');
+            }
+
+
+            echo "
+                <div class=\"center-modal\" style=\"top:0px;\">
+                    <form   class=\"choose-item animate-zoom\"
+                            id=\"wmf\" onkeydown=\"keySubmit(event, 'wmf')\"
+                            style=\"width:15%; height: auto\"
+                            action=\"index.php\" method=\"post\">
+
+                        <div class=\"container\" style=\"top:0; height:60%\">
+                            <h2 style=\"text-align:center\">Weight Required for<br>"
+                            .$abbrev." \$".$shprice."/".$shweight." ".$finmeas." </h2>
+                        </div>
+                        
+                        <div style=\"position:relative; height:auto%\">
+                            <input id=\"enterweight\" placeholder=\"enter $finmeas\" type=\"text\" name=\"measqty\" style=\"width:100%\" required>
+                            <button style=\"position:relative; top:0; background-color:green\" type=\"submit\" >Submit</button></div>
+
+
+                    </form>
+
+                </div>
+                <script type=\"text/javascript\">
+
+                    function gimfocus(){
+                        upcfocus = false;
+                        document.getElementById('enterweight').focus();
+                    }  
+                    gimfocus();                      
+
+                </script>";
+                        //document.getElementById('byu').style.display = none;
+                        //document.getElementById('byn').style.display = none;
+
+                $_SESSION['tempitem'] = $finitem;
+                $_SESSION['tempmeas'] = $finmeas;
+        }else{     
+
+
+            //insertion point
+            $finmeasqty = $finitem['Weight'];
+            $cartindex  = $finitem['ItemCode']."".$finmeasqty;
+
+            if(!isset($_SESSION['cart'][$cartindex])){
+                
+                $_SESSION['cart'][$cartindex] = array('item' => $finitem,'meas' => $finmeas, 'measqty' => $finmeasqty);
+                $_SESSION['cart'][$cartindex]['qty'] = 1;
+            }else{
+                $_SESSION['cart'][$cartindex]['qty']++;
+            }
+            //end insertion
+            $return = urldecode($_SESSION['return']);
+            header("location: $return");
+        }
+
+    }
+
+?>
+    </body>
+    <script type="text/javascript">
+        function focus(id){
+            document.getElementById(id).focus();
+        }
+
+        function keySubmit(e, id){
+            if(e.keyCode == 27 || e.keyCode == 13){
+                    document.getElementById(id).submit();
+                }
+        }
+
+
+    </script>
+</html>
