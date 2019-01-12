@@ -1,0 +1,212 @@
+/* General Reset */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, hr, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: none;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html body {
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #CCC;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #B25959;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.navbar {
+    z-index: 8;
+    overflow: no-content;
+    background-color: #333;
+    top: 0;
+    width: 100%;
+    position: fixed;
+    padding: 12px 0 0 0;
+    height: 56px;
+}
+
+.navbar a {
+    float: right;
+    display: block;
+    color: #F2F2F2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar button {
+    float: right;
+    display: block;
+    background-color: #AE4C4C;
+    color: #F2F2F2;
+    padding: 14px 16px;
+    margin: 0 12px;
+    border: none;
+    cursor: pointer;
+    width: auto;
+}
+
+.navbar .a:hover {
+    background: #DDD;
+    color: black;
+}
+
+.sp {
+    background-color: #AE4C4C;
+    color: white;
+    padding: 14px 20px !important;
+    border: thick #FFF;
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.sp:hover {
+    background: #BE7474;
+}
+
+.imgcontainer {
+    text-align: right;
+    margin: 2px 4px -20px 0px;
+    position: relative;
+}
+
+.container {
+    position: relative;
+    width: 90%;
+    padding: 12px;
+    left: 5px;
+    bottom: 5px;
+    align-content: center;
+}
+
+.container-foot {
+    width: 88%;
+    position: relative;
+    font-size: 12px;
+    text-align: left;
+    height: auto;
+}
+
+.cancelbtn {
+    width: auto;
+    background-color: #F44336;
+}
+
+/* Add Slide Animation */
+.animate-slide-left {
+    -webkit-animation: animate-slide-left 0.25s linear;
+    animation: animate-slide-left 0.25s linear;
+}
+
+@-webkit-keyframes animate-slide-left {
+    0% {
+        right: -100%;
+    }
+    
+    100% {
+        right: 1%;
+    }
+}
+
+@keyframes animate-slide-left {
+    0% {
+        right: -100%;
+    }
+    
+    100% {
+        right: 1%;
+    }
+}
+
+.animate-drop {
+    -webkit-animation: animate-drop 0.25s linear;
+    animation: animate-drop 0.25s linear;
+}
+
+@-webkit-keyframes animate-drop {
+    0% {
+        top: -100%;
+    }
+    
+    100% {
+        top: 12%;
+    }
+}
+
+@keyframes animate-drop {
+    0% {
+        top: -100%;
+    }
+    
+    100% {
+        top: 12%;
+    }
+}
+
+.animate-zoom {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s;
+}
+
+@-webkit-keyframes animatezoom {
+    from {
+        -webkit-transform: scale(0);
+    }
+    
+    to {
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes animatezoom {
+    from {
+        transform: scale(0);
+    }
+    
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 30px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+    
+    .cancelbtn {
+        width: 100%;
+    }
+}
+/*----end footer content----*/

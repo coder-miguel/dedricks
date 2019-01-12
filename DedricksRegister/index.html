@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Anon Page</title>
+        <link href="css/style.css" rel="stylesheet" type="text/css">
+        <link href="css/login-modal.css" rel="stylesheet" type="text/css">
+    </head>
+
+
+    <body>
+    
+                <div class="navbar">
+                    <a class="sp" onclick="showRegister(); hideLogin()">Register</button>
+                    <a class="sp" onclick="showLogin(); hideRegister()">Login</button>
+                    <a class="a"  href="../">Home</a>
+                    <a class="a"  href="checkout/">Checkout</a>
+                    <h1 style="padding-left:24px; color:white"><strong>Dedricks Register</strong></h1>
+                </div>
+
+
+        <div id="login-modal" class="modal" onclick="hideRegister(); clickedModal('login-modal'); ">
+          
+              <form class="modal-content animate-drop" id="login" action="php/login.php" method="post">
+
+                    <div class="imgcontainer">
+                      <span onclick="hideLogin()" class="close" title="Close Login Modal">&times;</span>
+                    </div>
+
+                    <div class="container">
+                      <label for="uname"><b>Username</b></label>
+                      <input type="text" placeholder="User Email" name="email" required>
+
+                      <label for="psw"><b>Password</b></label>
+                      <input type="password" placeholder="Enter Password" name="psw" required>
+                        
+                      <button type="submit">Login</button>
+                      <label>
+                        <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
+                      </label>
+                    </div>
+
+                    <div class="container container-foot" style="background-color:#f1f1f1;">
+                      <button type="button" onclick="hideLogin()" class="cancelbtn">Cancel</button>
+                      <span class="psw">Forgot <a href="#">password?</a></span>
+                    </div>
+
+              </form>
+        </div>
+
+        <div id="register-modal" class="modal" onclick="hideLogin(); clickedModal('register-modal'); ">
+          
+
+              <form class="modal-content animate-drop" id="register" action="php/register.php" method="post">
+
+                    <div class="imgcontainer">
+                        <span onclick="hideRegister()" class="close" title="Close Register Modal">&times;</span>
+                    </div>
+
+                    <div class="container">
+                        <label for="fname"> <b>First Name</b></label>
+                        <input type="text"     placeholder="First Name"        name="fname" required>
+
+                        <label for="lname"> <b>Last Name</b></label>
+                        <input type="text"     placeholder="Last Name"         name="lname" required>
+
+                        <label for="email"> <b>Email</b></label>
+                        <input type="text"     placeholder="User Email"        name="email" required>
+
+                        <label for="psw">   <b>Password</b></label>
+                        <input type="password" placeholder="Enter Password"    name="psw"   required>
+
+                        <input type="password" placeholder="Re-enter Password" name="psw2"  required>
+                        
+                        <button type="submit">Register</button>
+                        <label>
+                        <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
+                      </label>
+                    </div>
+
+                    <div class="container container-foot" style="background-color:#f1f1f1;">
+                       <button type="button" onclick="hideRegister()" class="cancelbtn">Cancel</button>
+                    </div>
+
+              </form>
+
+        </div>
+
+
+    <script>
+        // Get the modal
+        function clickedModal(id) {
+            var modal   = document.getElementById(id);
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+        function hideLogin() {
+            document.getElementById('login-modal').style.display='none';
+        }
+        function hideRegister() {
+            document.getElementById('register-modal').style.display='none';
+        }
+        function showLogin() {
+            document.getElementById('login-modal').style.display='block';
+        }
+        function showRegister() {
+            document.getElementById('register-modal').style.display='block';
+        }
+
+    </script>
+          
+
+    </body>
+
+</html>
+
+
